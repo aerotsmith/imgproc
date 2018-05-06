@@ -25,5 +25,9 @@ int main(int argc, char **argv)
     CProc cProc;
 
     cProc.displayImage(image);
+
+    cProc.findRegion(image,136,140);
+
+    cProc.displayImage(image);
     return 0;
 }

@@ -8,6 +8,12 @@
 
 using namespace std;
 using namespace cv;
+
+struct xy
+{ 
+  int x;
+  int y;
+};
  
 class CProc
 {
@@ -16,6 +22,7 @@ public:
     void displayImage(const Mat &cvMat);
     void saveImage(Mat cvMat);
     void displayPixels(Mat *cvMat);
+    vector<xy>* findRegion(Mat &cvMat, int x, int y);
  
     //Member variables
 protected:
