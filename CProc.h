@@ -21,7 +21,7 @@ struct hsv
   float s;
   float v;
 };
- 
+
 class CProc
 {
  
