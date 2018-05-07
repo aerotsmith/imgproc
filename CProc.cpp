@@ -67,7 +67,8 @@ void rgb2hsv(float r, float g, float b, hsv *color)
 }
 
 // Recursively traverses image to flood fill region
-void SeedFill(Mat *cvMat, uchar **region, int x, int y, hsv seedColor, float tolerance)
+void SeedFill(Mat *cvMat, uchar **region, int x, int y,
+              hsv seedColor, float tolerance, vector<xy> *rv)
 {
     // If out of bounds, return
     if ((x<0) || (x>cvMat->cols-1) ||
@@ -102,23 +103,33 @@ void SeedFill(Mat *cvMat, uchar **region, int x, int y, hsv seedColor, float tol
       return;
 
     region[x][y] = 1;
+    xy pos;
+    pos.x=x;
+    pos.y=y;
+    rv->push_back(pos);
 
     // Recursively scan neighboring pixels
-    SeedFill(cvMat, region, x-1,y, seedColor, tolerance);
-    SeedFill(cvMat, region, x+1,y, seedColor, tolerance);
-    SeedFill(cvMat, region, x,y-1, seedColor, tolerance);
-    SeedFill(cvMat, region, x,y+1, seedColor, tolerance);
-    SeedFill(cvMat, region, x-1,y+1, seedColor, tolerance);
-    SeedFill(cvMat, region, x+1,y-1, seedColor, tolerance);
-    SeedFill(cvMat, region, x+1,y+1, seedColor, tolerance);
-    SeedFill(cvMat, region, x-1,y-1, seedColor, tolerance);
+    SeedFill(cvMat, region, x-1,y, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x+1,y, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x,y-1, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x,y+1, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x-1,y+1, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x+1,y-1, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x+1,y+1, seedColor, tolerance,rv);
+    SeedFill(cvMat, region, x-1,y-1, seedColor, tolerance,rv);
 
     return;
 }
 
+bool compareByXY(const xy &a, const xy &b)
+{
+    return (a.y < b.y) || ((a.y == b.y) && (a.x < b.x));
+}
+
 // Creates a region bitmap from a Mat cvMat image. The region is a flood fill region
 // flooding at x,y
-uchar **CProc::findRegion(Mat *cvMat, int x, int y, float tolerance)
+uchar **CProc::findRegion(Mat *cvMat, int x, int y, float tolerance,
+                          vector<xy> *rv)
 {
     int nRows = cvMat->rows;
     int nCols = cvMat->cols;
@@ -139,8 +150,9 @@ uchar **CProc::findRegion(Mat *cvMat, int x, int y, float tolerance)
     rgb2hsv(r,g,b,&seedColor);
 
     // Recursively traverse bitmap and fill
-    SeedFill(cvMat, region, x,y, seedColor, tolerance);
+    SeedFill(cvMat, region, x,y, seedColor, tolerance, rv);
 
+    sort(rv->begin(), rv->end(), compareByXY);
     return region;
 }
 
@@ -159,7 +171,8 @@ bool hasEmptyNeighbor(uchar **region, int rows, int cols, int x, int y)
 
 
 // Creates a perimeter bitmap from a region bitmap
-uchar ** CProc::findPerimeter(uchar **region, int rows, int cols)
+uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
+                              vector<xy> *pv)
 {
     // Create perimeter bitmap
     uchar **perimeter = new uchar*[cols];
@@ -176,7 +189,14 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols)
              if (!hasEmptyNeighbor(region,rows,cols, x,y))
                 perimeter[x][y]=0;
              else
+             {
                 perimeter[x][y]=1;
+
+                xy pos;
+                pos.x=x;
+                pos.y=y;
+                pv->push_back(pos);
+             }
           }
        }
 

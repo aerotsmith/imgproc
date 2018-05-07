@@ -30,8 +30,8 @@ public:
     void saveImage(Mat cvMat);
     void displayPixels(uchar **pixels, int rows, int cols);
     void savePixels(uchar **pixels, int rows, int cols, string filename);
-    uchar **findRegion(Mat *cvMat, int x, int y, float tolerance);
-    uchar **findPerimeter(uchar **region, int rows, int cols);
+    uchar **findRegion(Mat *cvMat, int x, int y, float tolerance, vector<xy> *rv);
+    uchar **findPerimeter(uchar **region, int rows, int cols, vector<xy> *pv);
  
 };
 
