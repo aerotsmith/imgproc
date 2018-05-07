@@ -1,10 +1,11 @@
 #include "CProc.h"
+#include "polyfit.h"
 
 // Displays a Mat image
-void CProc::displayImage(const Mat &cvMat)
+void CProc::displayImage(string name, const Mat &cvMat)
 {
-    namedWindow("Input Image", WINDOW_AUTOSIZE);
-    imshow("Input Image", cvMat);
+    namedWindow(name.c_str(), WINDOW_AUTOSIZE);
+    imshow(name.c_str(), cvMat);
     waitKey(0);
 }
 
@@ -232,7 +233,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -252,7 +252,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -272,7 +271,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -292,7 +290,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -312,7 +309,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -332,7 +328,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -352,7 +347,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -372,7 +366,6 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                   pos.y=pv[i].y;
                   perim.push_back(pos);
                   pv.erase(pv.begin()+i); 
-                  i--;
                   found=true;
                   break;
               }
@@ -390,8 +383,115 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
     return perimeter;
 }
 
+Mat CProc::findSmoothPerimeter(vector<vector<xy>> *perimeters, int rows, int cols)
+{
+    Mat image(rows, cols , CV_8UC3, Scalar(255,255,255));
+
+    xy pos1,pos2;
+    xy lpos,pos;
+    bool lineFinished=true;
+    bool verticalLine=false;
+
+    vector<vector<xy>>::iterator it;
+    vector<xy>::iterator it2;
+    for (it = perimeters->begin(); it != perimeters->end(); it++)
+    {
+        for (it2=it->begin(); it2!=it->end(); it2++)
+        {
+            double *a;
+            int degree=4;
+            a = (double *)calloc(degree,sizeof(double));
+
+            if (it2+20 < it->end())
+            {
+                int x1=it2->x;
+                polyFit(degree,20, &it2, a);
+                it2+=20;
+                int x2=it2->x;
+
+                if (x1<x2)
+                    for (double x=x1; x<x2; x++)
+                    {
+                        Mat_<Vec3b> _image = image;
+                        double y=0.0;
+
+                        for (int d=0; d<=degree; d++)
+                            y+=a[d]*pow(x,d);
+
+                        _image(y,(int)x)[0]=0;
+                        _image(y,(int)x)[1]=0;
+                        _image(y,(int)x)[2]=0;
+                    }
+                else
+                    for (double x=x2; x<x1; x++)
+                    {
+                        Mat_<Vec3b> _image = image;
+                        double y=0.0;
+
+                        for (int d=0; d<=degree; d++)
+                            y+=a[d]*pow(x,d);
+
+                        _image(y,(int)x)[0]=0;
+                        _image(y,(int)x)[1]=0;
+                        _image(y,(int)x)[2]=0;
+                    }
+            }
+        }
+/*
+        for (it2=it->begin(); it2!=it->end(); it2++)
+        {
+            if (lineFinished)
+            {
+                pos1.x = it2->x;
+                pos1.y = it2->y;
+                lineFinished = false;
+                continue;
+            }
+
+            // is this a vertical line?
+            int i=1;
+            while (((it2+i) != it->end()) &&
+                   ((it2+i)->x == it2->x))
+            {
+              it2++;
+              verticalLine=true;
+            }
+            if (verticalLine)
+            {
+                pos2.x = it2->x;
+                pos2.y = it2->y;
+
+                // draw vertical line
+                if (pos1.y>pos2.y)
+                    for (int y=pos2.y; y<=pos1.y; y++)
+                    {
+                        Mat_<Vec3b> _image = image;
+                        _image(y,pos1.x)[0]=0;
+                        _image(y,pos1.x)[1]=0;
+                        _image(y,pos1.x)[2]=0;
+                    } 
+                else
+                    for (int y=pos1.y; y<=pos2.y; y++)
+                    {
+                        Mat_<Vec3b> _image = image;
+                        _image(y,pos1.x)[0]=0;
+                        _image(y,pos1.x)[1]=0;
+                        _image(y,pos1.x)[2]=0;
+                    } 
+
+                verticalLine=false;
+            }
+            else
+                lineFinished=true;
+        }
+*/
+    }
+
+    return image;
+} 
+
 // Displays a bitmap from findRegion or findPerimeter
-void CProc::displayPixels(uchar **pixels, int rows, int cols)
+void CProc::displayPixels(string name, uchar **pixels, int rows, int cols)
 {
     Mat image(rows, cols , CV_8UC3, Scalar(255,255,255));
     Mat_<Vec3b> _image = image;
@@ -407,7 +507,7 @@ void CProc::displayPixels(uchar **pixels, int rows, int cols)
          }
       }
 
-    displayImage(image);
+    displayImage(name, image);
     return;
 }
 

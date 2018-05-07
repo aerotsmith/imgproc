@@ -36,7 +36,7 @@ int main(int argc, char **argv)
 
     CProc cProc;
 
-    cProc.displayImage(image);
+    cProc.displayImage(argv[1],image);
 
     // find the region at x,y and transform region bitmap into a perimeter bitmap
     region = cProc.findRegion(&image,x,y,tolerance, &rv);
@@ -56,11 +56,16 @@ int main(int argc, char **argv)
 */
 
     // Display region and perimeter bitmaps
-    cProc.displayPixels(region, image.rows, image.cols);
-    cProc.displayPixels(perimeter, image.rows, image.cols);
+    cProc.displayPixels("Region", region, image.rows, image.cols);
+    cProc.displayPixels("Perimeter", perimeter, image.rows, image.cols);
 
     cProc.savePixels(region, image.rows, image.cols, "regionimg.png");
     cProc.savePixels(perimeter, image.rows, image.cols, "perimeterimg.png");
+
+    Mat smoothPerimeters;
+    smoothPerimeters = cProc.findSmoothPerimeter(&perimeters, image.rows, image.cols);
+
+    cProc.displayImage("Smooth Perimeters", smoothPerimeters);
 
     // Clean up region
     for (int i=0; i<image.rows; i++)

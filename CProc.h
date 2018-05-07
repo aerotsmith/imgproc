@@ -26,13 +26,13 @@ class CProc
 {
  
 public:
-    void displayImage(const Mat &cvMat);
+    void displayImage(string name, const Mat &cvMat);
     void saveImage(Mat cvMat);
-    void displayPixels(uchar **pixels, int rows, int cols);
+    void displayPixels(string name, uchar **pixels, int rows, int cols);
     void savePixels(uchar **pixels, int rows, int cols, string filename);
     uchar **findRegion(Mat *cvMat, int x, int y, float tolerance, vector<xy> *rv);
     uchar **findPerimeter(uchar **region, int rows, int cols, vector<vector<xy>> *perimeters);
- 
+    Mat findSmoothPerimeter(vector<vector<xy>> *perimeters, int rows, int cols); 
 };
 
 #endif
