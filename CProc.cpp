@@ -200,6 +200,193 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
           }
        }
 
+    // sort perimeter coords
+    vector<vector<xy>> spv;
+
+    // Loop for each perimeter until pv is empty
+    while (pv->size() > 0)
+    {
+       // Begin new perimeter
+
+       // Get first point
+       vector<xy> perim;
+       xy pos;
+       int vsize=perim.size();
+       pos.x=(*pv)[0].x;
+       pos.y=(*pv)[0].y;
+       perim.push_back(pos);
+       pv->erase(pv->begin()); 
+
+       bool found;
+       bool keepgoing=true;
+       while(keepgoing)
+       {
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x  ==(*pv)[i].x) &&
+                  (perim.back().y-1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x+1==(*pv)[i].x) &&
+                  (perim.back().y-1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x+1==(*pv)[i].x) &&
+                  (perim.back().y  ==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x+1==(*pv)[i].x) &&
+                  (perim.back().y+1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x  ==(*pv)[i].x) &&
+                  (perim.back().y+1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x-1==(*pv)[i].x) &&
+                  (perim.back().y+1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x-1==(*pv)[i].x) &&
+                  (perim.back().y  ==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          found=false;
+          for (int i=0; i<pv->size(); i++)
+          {
+              // If next position found, add to perim
+              if ((perim.back().x-1==(*pv)[i].x) &&
+                  (perim.back().y-1==(*pv)[i].y))
+              {
+                  pos.x=(*pv)[i].x;
+                  pos.y=(*pv)[i].y;
+                  perim.push_back(pos);
+                  pv->erase(pv->begin()+i); 
+                  i--;
+                  found=true;
+                  break;
+              }
+          }
+   
+          if (found)
+              continue;
+   
+          keepgoing=false;
+       }
+ 
+       spv.push_back(perim);
+    }
+
     return perimeter;
 }
 
