@@ -1,4 +1,4 @@
-#include "CProc.h"
+#include "ImgUtils.h"
 
 // returns the maximum r g or b value
 float max(float r, float g, float b)
@@ -120,7 +120,7 @@ bool compareByXY(const xy &a, const xy &b)
 
 // Creates a region bitmap from a Mat cvMat image. The region is a flood fill region
 // flooding at x,y
-uchar **CProc::findRegion(Mat *cvMat, int x, int y, float tolerance,
+uchar **ImgUtils::findRegion(Mat *cvMat, int x, int y, float tolerance,
                           vector<xy> *rv)
 {
     int nRows = cvMat->rows;

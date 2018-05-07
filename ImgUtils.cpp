@@ -1,7 +1,7 @@
-#include "CProc.h"
+#include "ImgUtils.h"
 
 // Displays a Mat image
-void CProc::displayImage(string name, const Mat &cvMat)
+void ImgUtils::displayImage(string name, const Mat &cvMat)
 {
     namedWindow(name.c_str(), WINDOW_AUTOSIZE);
     imshow(name.c_str(), cvMat);
@@ -9,7 +9,7 @@ void CProc::displayImage(string name, const Mat &cvMat)
 }
 
 // Displays a bitmap from findRegion or findPerimeter
-void CProc::displayPixels(string name, uchar **pixels, int rows, int cols)
+void ImgUtils::displayPixels(string name, uchar **pixels, int rows, int cols)
 {
     Mat image(rows, cols , CV_8UC3, Scalar(255,255,255));
     Mat_<Vec3b> _image = image;
@@ -30,7 +30,7 @@ void CProc::displayPixels(string name, uchar **pixels, int rows, int cols)
 }
 
 // save bitmap to image file
-void CProc::savePixels(uchar **pixels, int rows, int cols, string filename)
+void ImgUtils::savePixels(uchar **pixels, int rows, int cols, string filename)
 {
     Mat image(rows, cols , CV_8UC3, Scalar(255,255,255));
     Mat_<Vec3b> _image = image;

@@ -1,5 +1,5 @@
 //Polynomial Fit
-#include "CProc.h"
+#include "polyfit.h"
 
 using namespace std;
 

@@ -1,4 +1,4 @@
-#include "CProc.h"
+#include "ImgUtils.h"
 
 // Returns true if any neighbor pixels are empty
 bool hasEmptyNeighbor(uchar **region, int rows, int cols, int x, int y)
@@ -15,7 +15,7 @@ bool hasEmptyNeighbor(uchar **region, int rows, int cols, int x, int y)
 
 
 // Creates a perimeter bitmap from a region bitmap
-uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
+uchar ** ImgUtils::findPerimeter(uchar **region, int rows, int cols,
                               vector<vector<xy>> *perimeters)
 {
     // Create perimeter bitmap

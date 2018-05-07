@@ -1,5 +1,5 @@
 #include <iostream>
-#include "CProc.h"
+#include "ImgUtils.h"
 #include "opencv2/opencv.hpp"
 
 using namespace std;
@@ -25,8 +25,10 @@ int main(int argc, char **argv)
     y = atoi(argv[3]);
     tolerance = (float)atof(argv[4]);
 
+    string path="../Images/";
+
     Mat image;
-    image = imread(argv[1], 1);
+    image = imread(path.append(argv[1]), 1);
 
     if (!image.data)
     {
@@ -34,13 +36,13 @@ int main(int argc, char **argv)
         return -1;
     }
 
-    CProc cProc;
+    ImgUtils imgUtils;
 
-    cProc.displayImage(argv[1],image);
+    imgUtils.displayImage(argv[1],image);
 
     // find the region at x,y and transform region bitmap into a perimeter bitmap
-    region = cProc.findRegion(&image,x,y,tolerance, &rv);
-    perimeter = cProc.findPerimeter(region, image.rows, image.cols, &perimeters);
+    region = imgUtils.findRegion(&image,x,y,tolerance, &rv);
+    perimeter = imgUtils.findPerimeter(region, image.rows, image.cols, &perimeters);
 
 /*
     vector<vector<xy>>::iterator it;
@@ -56,16 +58,16 @@ int main(int argc, char **argv)
 */
 
     // Display region and perimeter bitmaps
-    cProc.displayPixels("Region", region, image.rows, image.cols);
-    cProc.displayPixels("Perimeter", perimeter, image.rows, image.cols);
+    imgUtils.displayPixels("Region", region, image.rows, image.cols);
+    imgUtils.displayPixels("Perimeter", perimeter, image.rows, image.cols);
 
-    cProc.savePixels(region, image.rows, image.cols, "regionimg.png");
-    cProc.savePixels(perimeter, image.rows, image.cols, "perimeterimg.png");
+    imgUtils.savePixels(region, image.rows, image.cols, "regionimg.png");
+    imgUtils.savePixels(perimeter, image.rows, image.cols, "perimeterimg.png");
 
     Mat smoothPerimeters;
-    smoothPerimeters = cProc.findSmoothPerimeter(&perimeters, image.rows, image.cols);
+    smoothPerimeters = imgUtils.findSmoothPerimeter(&perimeters, image.rows, image.cols);
 
-    cProc.displayImage("Smooth Perimeters", smoothPerimeters);
+    imgUtils.displayImage("Smooth Perimeters", smoothPerimeters);
 
     // Clean up region
     for (int i=0; i<image.rows; i++)

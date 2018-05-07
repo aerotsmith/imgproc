@@ -1,7 +1,7 @@
-#include "CProc.h"
+#include "ImgUtils.h"
 #include "polyfit.h"
 
-Mat CProc::findSmoothPerimeter(vector<vector<xy>> *perimeters, int rows, int cols)
+Mat ImgUtils::findSmoothPerimeter(vector<vector<xy>> *perimeters, int rows, int cols)
 {
     Mat image(rows, cols , CV_8UC3, Scalar(255,255,255));
 

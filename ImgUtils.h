@@ -22,7 +22,7 @@ struct hsv
   float v;
 };
 
-class CProc
+class ImgUtils
 {
  
 public:
