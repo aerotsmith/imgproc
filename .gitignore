@@ -1,4 +1,7 @@
 *build*/
 libcproc.a
 Images
+*.swp
+*.png
+*.jpg
 ctest

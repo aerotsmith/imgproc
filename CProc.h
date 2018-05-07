@@ -14,6 +14,13 @@ struct xy
   int x;
   int y;
 };
+
+struct hsv
+{ 
+  float h;
+  float s;
+  float v;
+};
  
 class CProc
 {
@@ -21,11 +28,10 @@ class CProc
 public:
     void displayImage(const Mat &cvMat);
     void saveImage(Mat cvMat);
-    void displayPixels(Mat *cvMat);
-    vector<xy>* findRegion(Mat &cvMat, int x, int y);
- 
-    //Member variables
-protected:
+    void displayPixels(uchar **pixels, int rows, int cols);
+    void savePixels(uchar **pixels, int rows, int cols, string filename);
+    uchar **findRegion(Mat *cvMat, int x, int y, float tolerance);
+    uchar **findPerimeter(uchar **region, int rows, int cols);
  
 };
 

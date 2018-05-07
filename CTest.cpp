@@ -7,11 +7,21 @@ using namespace cv;
 
 int main(int argc, char **argv)
 {
-    if (argc != 3)
+    uchar **region;
+    uchar **perimeter;
+    int x,y;
+    float tolerance;
+
+    if (argc != 5)
     {
-        cout << "usage: ctest <Image_Path> <Output_Path\n";
+        cerr << "usage: ctest <Image_Path> <x-coord> <y-coord> <tolerance>\n";
         return -1;
     }
+
+    // Collect parameters
+    x = atoi(argv[2]);
+    y = atoi(argv[3]);
+    tolerance = (float)atof(argv[4]);
 
     Mat image;
     image = imread(argv[1], 1);
@@ -26,8 +36,26 @@ int main(int argc, char **argv)
 
     cProc.displayImage(image);
 
-    cProc.findRegion(image,136,140);
+    // find the region at x,y and transform region bitmap into a perimeter bitmap
+    region = cProc.findRegion(&image,x,y,tolerance);
+    perimeter = cProc.findPerimeter(region, image.rows, image.cols);
 
-    cProc.displayImage(image);
+    // Display region and perimeter bitmaps
+    cProc.displayPixels(region, image.rows, image.cols);
+    cProc.displayPixels(perimeter, image.rows, image.cols);
+
+    cProc.savePixels(region, image.rows, image.cols, "regionimg.png");
+    cProc.savePixels(perimeter, image.rows, image.cols, "perimeterimg.png");
+
+    // Clean up region
+    for (int i=0; i<image.rows; i++)
+      free(region[i]);
+    delete [] region;
+
+    // Clean up perimeter
+    for (int i=0; i<image.rows; i++)
+      free(perimeter[i]);
+    delete [] perimeter;
+
     return 0;
 }
