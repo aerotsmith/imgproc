@@ -12,7 +12,7 @@ int main(int argc, char **argv)
     int x,y;
     float tolerance;
     vector<xy> rv;
-    vector<xy> pv;
+    vector<vector<xy>> perimeters;
 
     if (argc != 5)
     {
@@ -40,14 +40,20 @@ int main(int argc, char **argv)
 
     // find the region at x,y and transform region bitmap into a perimeter bitmap
     region = cProc.findRegion(&image,x,y,tolerance, &rv);
-    perimeter = cProc.findPerimeter(region, image.rows, image.cols, &pv);
+    perimeter = cProc.findPerimeter(region, image.rows, image.cols, &perimeters);
 
-    /*
-    for(vector<xy>::iterator it=pv.begin(); it!=pv.end(); ++it)
+/*
+    vector<vector<xy>>::iterator it;
+    vector<xy>::iterator it2;
+    for (it = perimeters.begin(); it != perimeters.end(); it++)
     {
-        cout << it->x << ", "<<it->y<<endl;
+        cout << "New perimeter\n";
+        for (it2=it->begin(); it2!=it->end(); it2++)
+        {
+            cout << it2->x << ", "<<it2->y<<endl;
+        }
     }
-    */
+*/
 
     // Display region and perimeter bitmaps
     cProc.displayPixels(region, image.rows, image.cols);

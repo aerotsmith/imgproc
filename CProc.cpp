@@ -172,13 +172,14 @@ bool hasEmptyNeighbor(uchar **region, int rows, int cols, int x, int y)
 
 // Creates a perimeter bitmap from a region bitmap
 uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
-                              vector<xy> *pv)
+                              vector<vector<xy>> *perimeters)
 {
     // Create perimeter bitmap
     uchar **perimeter = new uchar*[cols];
     for (int i=0; i<cols; i++)
        perimeter[i]=(uchar *)calloc(rows,sizeof(uchar));
 
+    vector<xy> pv;
     for (int y=0; y<rows; y++)
        for (int x=0; x<cols; x++)
        {
@@ -195,16 +196,15 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
                 xy pos;
                 pos.x=x;
                 pos.y=y;
-                pv->push_back(pos);
+                pv.push_back(pos);
              }
           }
        }
 
     // sort perimeter coords
-    vector<vector<xy>> spv;
 
     // Loop for each perimeter until pv is empty
-    while (pv->size() > 0)
+    while (pv.size() > 0)
     {
        // Begin new perimeter
 
@@ -212,26 +212,26 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
        vector<xy> perim;
        xy pos;
        int vsize=perim.size();
-       pos.x=(*pv)[0].x;
-       pos.y=(*pv)[0].y;
+       pos.x=pv[0].x;
+       pos.y=pv[0].y;
        perim.push_back(pos);
-       pv->erase(pv->begin()); 
+       pv.erase(pv.begin()); 
 
        bool found;
        bool keepgoing=true;
        while(keepgoing)
        {
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x  ==(*pv)[i].x) &&
-                  (perim.back().y-1==(*pv)[i].y))
+              if ((perim.back().x  ==pv[i].x) &&
+                  (perim.back().y-1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -242,16 +242,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x+1==(*pv)[i].x) &&
-                  (perim.back().y-1==(*pv)[i].y))
+              if ((perim.back().x+1==pv[i].x) &&
+                  (perim.back().y-1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -262,16 +262,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x+1==(*pv)[i].x) &&
-                  (perim.back().y  ==(*pv)[i].y))
+              if ((perim.back().x+1==pv[i].x) &&
+                  (perim.back().y  ==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -282,16 +282,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x+1==(*pv)[i].x) &&
-                  (perim.back().y+1==(*pv)[i].y))
+              if ((perim.back().x+1==pv[i].x) &&
+                  (perim.back().y+1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -302,16 +302,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x  ==(*pv)[i].x) &&
-                  (perim.back().y+1==(*pv)[i].y))
+              if ((perim.back().x  ==pv[i].x) &&
+                  (perim.back().y+1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -322,16 +322,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x-1==(*pv)[i].x) &&
-                  (perim.back().y+1==(*pv)[i].y))
+              if ((perim.back().x-1==pv[i].x) &&
+                  (perim.back().y+1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -342,16 +342,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x-1==(*pv)[i].x) &&
-                  (perim.back().y  ==(*pv)[i].y))
+              if ((perim.back().x-1==pv[i].x) &&
+                  (perim.back().y  ==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -362,16 +362,16 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
               continue;
    
           found=false;
-          for (int i=0; i<pv->size(); i++)
+          for (int i=0; i<pv.size(); i++)
           {
               // If next position found, add to perim
-              if ((perim.back().x-1==(*pv)[i].x) &&
-                  (perim.back().y-1==(*pv)[i].y))
+              if ((perim.back().x-1==pv[i].x) &&
+                  (perim.back().y-1==pv[i].y))
               {
-                  pos.x=(*pv)[i].x;
-                  pos.y=(*pv)[i].y;
+                  pos.x=pv[i].x;
+                  pos.y=pv[i].y;
                   perim.push_back(pos);
-                  pv->erase(pv->begin()+i); 
+                  pv.erase(pv.begin()+i); 
                   i--;
                   found=true;
                   break;
@@ -384,7 +384,7 @@ uchar ** CProc::findPerimeter(uchar **region, int rows, int cols,
           keepgoing=false;
        }
  
-       spv.push_back(perim);
+       perimeters->push_back(perim);
     }
 
     return perimeter;

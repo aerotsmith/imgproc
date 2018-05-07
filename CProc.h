@@ -31,7 +31,7 @@ public:
     void displayPixels(uchar **pixels, int rows, int cols);
     void savePixels(uchar **pixels, int rows, int cols, string filename);
     uchar **findRegion(Mat *cvMat, int x, int y, float tolerance, vector<xy> *rv);
-    uchar **findPerimeter(uchar **region, int rows, int cols, vector<xy> *pv);
+    uchar **findPerimeter(uchar **region, int rows, int cols, vector<vector<xy>> *perimeters);
  
 };
 
