@@ -1,4 +1,11 @@
-//Polynomial Fit
+//-------------------------------------------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// Polynomial Fit
+// Finds a smoothed curve of a list of points (pts) and returns polynomial
+// coefficients for the curve of a given degree.
+//-------------------------------------------------------------------------
 #include "polyfit.h"
 
 using namespace std;

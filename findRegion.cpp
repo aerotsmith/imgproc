@@ -1,3 +1,12 @@
+//-------------------------------------------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// findRegion() method
+// Finds the region of a flood fill in a given image at x,y. Tolerance is
+// calculated using color distance between hsv values.
+// Returns bitmap of fill region
+//-------------------------------------------------------------------------
 #include "ImgUtils.h"
 
 // returns the maximum r g or b value

@@ -1,3 +1,11 @@
+//-------------------------------------------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// findSmoothPerimeter() method
+// Used the Polyfit Least Squares method to smooth perimeter curves
+// Returns Mat image file of smoothed curves
+//-------------------------------------------------------------------------
 #include "ImgUtils.h"
 #include "polyfit.h"
 

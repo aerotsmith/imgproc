@@ -21,4 +21,5 @@ https://www.rapidtables.com/convert/color/rgb-to-hsv.html
 Distance between colors calculation:
 https://stackoverflow.com/questions/35113979/calculate-distance-between-colors-in-hsv-space
 
-
+Polyfit Least Squares Method:
+http://www.bragitoff.com/2015/09/c-program-for-polynomial-fit-least-squares/

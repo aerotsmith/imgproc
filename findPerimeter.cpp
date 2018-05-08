@@ -1,3 +1,11 @@
+//-------------------------------------------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// findPerimeter() method
+// Finds the perimeter around a given region
+// Returns bitmap of perimeter and list of perimeter coordinates
+//-------------------------------------------------------------------------
 #include "ImgUtils.h"
 
 // Returns true if any neighbor pixels are empty

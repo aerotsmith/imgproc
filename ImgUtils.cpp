@@ -1,3 +1,11 @@
+//-------------------------------------------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// ImgUtils class
+// Contains general image utilities and other implementations of image
+// processing algorithms.
+//-------------------------------------------------------------------------
 #include "ImgUtils.h"
 
 // Displays a Mat image

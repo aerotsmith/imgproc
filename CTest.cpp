@@ -1,3 +1,9 @@
+//-----------------------------------------
+// Developer: Tom Smith
+// Date: 5/7/2018
+// 
+// cli test program for ImgUtils class
+//-----------------------------------------
 #include <iostream>
 #include "ImgUtils.h"
 #include "opencv2/opencv.hpp"
