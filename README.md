@@ -1,4 +1,5 @@
 # imgproc
+exercise-AEO3110
 
 TO BUILD:
 From the project directory, execute these commands:
